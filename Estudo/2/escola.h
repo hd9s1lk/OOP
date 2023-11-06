@@ -125,4 +125,27 @@ class Professor {
 
 
 };
+
+class Turma: public Professor {
+    private:
+        int NAlunos;
+        string LetraTurma;
+
+    public:
+        Turma() {
+
+        }
+
+        Turma(int nalunos, string letraturma){
+            NAlunos = nalunos;
+            LetraTurma = letraturma;
+        }
+
+
+
+
+};
+
+
+
         
