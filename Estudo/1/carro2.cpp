@@ -7,14 +7,9 @@ using namespace std;
 int main(int argc, char* argv[]){
 
     Passageiro passenger1("Henrique", 20, Carro("Kia", 100, 2023));
-
-    passenger1.Show();
-    passenger1.Update();
-    passenger1.Show();
-
     
-    ifstream sf;
-    ofstream rf;
+    ifstream rf;
+    ofstream sf;
 
     sf.open("Garagem.txt");
     if(!sf){
@@ -22,6 +17,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
+    passenger1.SaveFile(sf);
     sf.close();
 
     rf.open("Garagem.txt");
@@ -30,6 +26,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
+    passenger1.ReadFile(rf);
     rf.close();
 
 

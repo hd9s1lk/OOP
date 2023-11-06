@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -203,33 +204,33 @@ class Passageiro: public Carro {
 
         }
 
-        friend ostream& operator>> (ostream& rf, Passageiro p){
-                rf << "Nome: " << p.Nome << endl;
-                rf << "Idade: " << p.Idade << endl;
-                rf << "Carro: " << p.carro << endl;
+        friend ostream& operator<< (ostream& sf, Passageiro& p){
+                sf << "Nome: " << p.Nome << endl;
+                sf << "Idade: " << p.Idade << endl;
+                sf << "Carro: " << p.carro << endl;
 
-                return rf;
+                return sf;
         }
 
-        friend istream& operator<< (istream& sf, Passageiro p){
+        friend istream& operator>> (istream& rf, Passageiro& p){
                 char aux[100];
                 int aux1;
 
                 cout << "Insira o seu Nome: " << endl;
-                sf.getline(aux,sizeof aux);
+                rf.getline(aux,sizeof aux);
                 p.Nome = aux;
                 cout << "Insira o seu Idade: " << endl;
                 cin >> aux1;
                 p.Idade = aux1; 
                 cout << "Insira o seu Veículo: " << endl;
-                sf >> p.carro;
+                rf >> p.carro;
 
-                return sf;
+                return rf;
                 
         }
 
         friend bool operator== (Passageiro p1, Passageiro p2){
-                if (p1.Nome == p2.Nome && p1.Idade == p2.Idade){
+                if (p1.Nome == p2.Nome && p1.Idade == p2.Idade && p1.carro == p2.carro){
                     cout << "Estas pessoas sao iguais" << endl;
                     return true;
                 } else {
@@ -239,7 +240,7 @@ class Passageiro: public Carro {
         }
 
         friend bool operator!= (Passageiro p1, Passageiro p2){
-                if (p1.Nome == p2.Nome && p1.Idade == p2.Idade){
+                if (p1.Nome == p2.Nome && p1.Idade == p2.Idade && p1.carro == p1.carro){
                     cout << "Estas pessoas sao iguais" << endl;
                     return false;
                 } else {
@@ -256,13 +257,13 @@ class Passageiro: public Carro {
             }
         }
 
-        void SaveFile(ifstream& sf){
+        void SaveFile(ofstream& sf){
             sf << "Nome: " << getNome() << endl;
             sf << "Idade: " << getIdade() << endl;
             carro.SaveFile(sf);
         }
 
-        void ReadFile(ofstream& rf){
+        void ReadFile(ifstream& rf){
             string line;
 
             getline(rf,line,',');
@@ -271,8 +272,8 @@ class Passageiro: public Carro {
             getline(rf,line,',');
             Idade = stoi(line);
 
-            getline(rf,line);
-            carro = stoi(line);
+            //getline(rf,line);
+            //carro = stoi(line);
         }
 
 
