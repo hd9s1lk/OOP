@@ -9,6 +9,7 @@ int main(int argc, char* argv[]){
     Carro carro1("Mazda", 350, 1987);
     Carro carro2("Nissan GTR", 457, 1993);
     
+    
 
     ifstream rf;
     ofstream sf;
