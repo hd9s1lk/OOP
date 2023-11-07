@@ -67,7 +67,9 @@ int main(int argc, char* argv[]){
     }
 
     for(i=0; i<size; i++){
-        p[i].Show();
+        if(p[i].getUC() == "Matemática"){
+            p[i].Show();
+        }
     }
 
 
