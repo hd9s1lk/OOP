@@ -272,6 +272,8 @@ class Passageiro: public Carro {
             getline(rf,line,',');
             Idade = stoi(line);
 
+            carro.ReadFile(rf);
+
             //getline(rf,line);
             //carro = stoi(line);
         }
