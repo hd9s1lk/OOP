@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    data1.SaveFile(of);
+    data1.OpenFile(of);
     of.close();
 
     rf.open("data.txt");
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    data1.ReadFile(rf);
+    data1.SaveFile(rf);
     rf.close();
 
 

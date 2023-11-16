@@ -296,3 +296,121 @@ class Pessoa: public Data{
 
 };
 
+class Funcionario: public Pessoa{
+    private:
+        int Num_func;
+        string Setor;
+        Pessoa pessoa;
+    public:
+        Funcionario(){
+
+        }
+
+        Funcionario(int num_func, string setor, Pessoa _pessoa){
+            Num_func = num_func;
+            Setor = setor;
+            pessoa = _pessoa;
+
+        }
+
+        inline void setNum_func(int num_func){
+                Num_func=num_func;
+            }
+
+        inline int getNum_func(){
+                return Num_func;
+            }
+
+        inline void setSetor(string setor){
+            Setor=setor;
+        }
+        
+        inline string getSetor(){
+            return Setor;
+        }
+
+        inline void setPessoa(Pessoa _pessoa){
+            pessoa = _pessoa;
+        }
+
+        inline Pessoa getPessoa(){
+            return pessoa;
+        }
+
+        void Show(){
+            pessoa.Show();
+            cout << "Numero de Funcionario: " << getNum_func() << endl;
+            cout << "Setor: " << getSetor() << endl;
+        }
+
+        void ex5(){
+            pessoa.NewAdress();
+
+            char aux[100];
+            cout << "Insira um novo setor: " << endl;
+            cin.getline(aux, sizeof(aux));
+            setSetor(aux);
+        }
+
+        void ex6(){
+            pessoa.NewDate();
+        }
+
+        friend istream& operator >>(istream& sf, Funcionario& f){
+                
+                char aux[100];
+
+                sf >> (Pessoa&) f;
+                cout << "Numero de funcionario: ";
+                sf >> f.Num_func;
+                cout << "Setor: ";
+                sf >> aux;
+                f.Setor = aux;                
+
+                return sf;
+            }
+        
+        void SaveFile(ofstream& of){
+            
+            pessoa.SaveFile(of);
+            of << getNum_func() << "/" << getSetor() << endl;
+
+        }
+
+        void ReadFile(ifstream& sf){
+            pessoa.ReadFile(sf);
+
+            char aux[100];
+            sf.getline(aux, 100, ';');
+            Num_func = atoi(aux);
+            sf.getline(aux,100,',');
+            Setor = aux;
+
+        }
+
+        void BubbleSort(Funcionario *f, int size){
+            bool swaped;
+            int i,j;
+
+            i = size;
+            do {
+                swaped = false;
+                for(j=1; j<i; j++){
+                    if ((f + j -1)->getNome() > (f+j)->getNome()){
+                        Swap(f + j -1, f+j);
+                        swaped = true;
+                    }
+                    i--;
+                } 
+            } while (i>0 && swaped);
+        }
+
+        void Swap(Funcionario *f, Funcionario* f2){
+            Funcionario aux;
+
+            aux = *f;
+            *f = *f2;
+            *f2 = aux;
+        }
+
+};

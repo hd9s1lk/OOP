@@ -23,7 +23,7 @@ int main(int argc, char * argv[]){
         pessoa1.SaveFile(ofile);
         pessoa2.SaveFile(ofile);
         ofile.close();
-        cout << "Info guardada com sucesso ";
+        cout << "Info guardada com sucesso";
 
     }
 
