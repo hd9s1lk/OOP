@@ -142,16 +142,36 @@ class Funcionario: public Empresa {
         string Name;
         int Idade, AnoEXP;
         Empresa empresa;
+        float Salario;
+        int H_Trabalho;
     public:
         Funcionario(){
 
         }
 
-        Funcionario(string name, int idade, int anoexp, Empresa _empresa){
+        Funcionario(string name, int idade, int anoexp, float salario, int h_trabalho,Empresa _empresa){
             Name = name;
             Idade = idade;
             AnoEXP = anoexp;
+            Salario = salario;
+            H_Trabalho = h_trabalho;
             empresa = _empresa;
+        }
+
+        inline void setSalario(float salario){
+            Salario = salario;
+        }
+
+        inline float getSalario(){
+            return Salario;
+        }
+
+        inline void setH_Trabalho(int h_trabalho){
+            H_Trabalho = h_trabalho;
+        }
+
+        inline int getH_Trabalho(){
+            return H_Trabalho;
         }
 
         inline void setName(string name){
@@ -190,12 +210,15 @@ class Funcionario: public Empresa {
             cout << "Nome do Funcionario: " << getName() << endl;
             cout << "Idade: " << getIdade() << endl;
             cout << "Ano(s) de Experiência: " << getAnoEXP() << endl;
+            cout << "Salario: " << getSalario() << endl;
+            cout << "Horas de trabalho: " << getH_Trabalho() << endl;
             empresa.Show();
         }
 
         void Update(){
             string temp;
             int temp2;
+            float temp3;
 
             cout << "Insira um novo Nome: " << endl;
             cin >> temp;
@@ -209,11 +232,19 @@ class Funcionario: public Empresa {
             cin >> temp2;
             setAnoEXP(temp2);
 
+            cout << "Insira o seu salario: " << endl;
+            cin >> temp3;
+            setSalario(temp3);
+
+            cout << "Insira as Horas de trabalho: " << endl;
+            cin >> temp2;
+            setH_Trabalho(temp2);
+            
             empresa.Update();
         }
 
         void Diferente(Funcionario f1){
-            if(f1.Name != this->Name && f1.Idade != this->Idade && f1.AnoEXP != this->AnoEXP && f1.empresa != this->empresa){
+            if(f1.Name != this->Name && f1.Idade != this->Idade && f1.AnoEXP != this->AnoEXP && f1.empresa != this->empresa && f1.Salario != getSalario() && f1.H_Trabalho != getH_Trabalho()){
                 cout << "Funcionarios diferentes" << endl;
             } else {
                 cout << "Funcionarios iguais" << endl;
@@ -221,7 +252,7 @@ class Funcionario: public Empresa {
         }
 
         friend bool operator==(Funcionario f1, Funcionario f2){
-            if (f1.Name == f2.Name && f1.Idade == f2.Idade && f1.AnoEXP == f2.AnoEXP && f1.empresa == f2.empresa){
+            if (f1.Name == f2.Name && f1.Idade == f2.Idade && f1.AnoEXP == f2.AnoEXP && f1.empresa == f2.empresa && f1.Salario == f2.Salario && f1.H_Trabalho == f2.H_Trabalho){
                 cout << "Estes funcionarios sao iguais" << endl;
                 return true;
             } else {
@@ -230,7 +261,7 @@ class Funcionario: public Empresa {
         }
 
         friend bool operator!=(Funcionario f1, Funcionario f2){
-            if (f1.Name == f2.Name && f1.Idade == f2.Idade && f1.AnoEXP == f2.AnoEXP && f1.empresa == f2.empresa){
+            if (f1.Name == f2.Name && f1.Idade == f2.Idade && f1.AnoEXP == f2.AnoEXP && f1.empresa == f2.empresa && f1.Salario == f2.Salario && f1.H_Trabalho == f2.H_Trabalho){
                 cout << "Estes funcionarios sao iguais" << endl;
                 return false;
             } else {
@@ -242,8 +273,10 @@ class Funcionario: public Empresa {
             out << "Nome: " << f1.Name << endl;
             out << "Idade: " << f1.Idade << endl;
             out << "Anos de Experiencia: " << f1.AnoEXP << endl;
+            out << "Salario: " << f1.Salario << endl;
+            out << "Horas de trabalho: " << f1.H_Trabalho << endl;
             out << "Empresa: " << f1.empresa << endl;
-
+        
             return out;
 
         }
@@ -259,6 +292,12 @@ class Funcionario: public Empresa {
             cout << "Insira os anos de experiencia: " << endl;
             in >> f1.AnoEXP;
 
+            cout << "Insira o salario: " << endl;
+            in >> f1.Salario;
+
+            cout << "Insira as horas de trabalho: " << endl;
+            in >> f1.H_Trabalho;
+
             cout << "Insira a empresa que trabalha: " << endl;
             in >> f1.empresa;
 
@@ -267,6 +306,7 @@ class Funcionario: public Empresa {
 
         void SaveFile(ofstream& out){
             out << "Nome: " << getName() << "/" << "Idade: " << getIdade() << "/" << "Anos de Experiencia: " << getAnoEXP() << endl;
+            out << "Salario: " << getSalario() << "/" << getH_Trabalho() << endl;
             out << "Empresa: " << empresa << endl;
 
         }
@@ -278,5 +318,112 @@ class Funcionario: public Empresa {
             cout << line << endl;
         }
 
+        void ReadAll() {                                   //Ler info de novo utilizador atraves do teclado
+                char aux[100];
+                int temp;
+                float temp3;
+                cout << "Insira o seu nome: " << endl;
+                cin.getline(aux, sizeof aux);
+                setNome(aux);
+                cout << "Insira a sua idade: " << endl;
+                cin >> temp;
+                setIdade(temp);
+                cout << "Insira os seus anos de experiência: " << endl;
+                cin >> temp;
+                setAnoEXP(temp);
+                cout << "Insira a sua empresa" << endl;
+                cin >> empresa;
+                setEmpresa(empresa);
+                cout << "Insira o seu salario: " << endl;
+                cin >> temp3;
+                setSalario(temp3);
+                cout << "Insira as sua horas de trabalho: " << endl;
+                cin >> temp;
+                setH_Trabalho(temp);
+                
+
+            }
+
+
+};
+
+class Chefe: public Funcionario {
+    private:
+        Funcionario F;
+    public:
+        Chefe(){
+
+        }
+
+        Chefe(Funcionario f){
+            F = f;
+        }
+
+        float Calcula_Ordenado(){
+            return 1.50 * getSalario() * getH_Trabalho(); 
+        }
+};
+
+
+class SoftwareEnginner: public Funcionario {
+    private:
+        bool PC_Empresa;
+        Funcionario F;
+    public:
+        SoftwareEnginner(){
+
+        }
+
+        SoftwareEnginner(bool pc_empresa, Funcionario f){
+            PC_Empresa = pc_empresa;
+            F = f;
+        }
+
+        void Show(){
+            F.Show();
+            if(PC_Empresa){
+                cout << "usa computador da empresa" << endl;
+            } else {
+                cout << "Nao usa computador da empresa" << endl;
+            }
+        }
+
+        void ReadAll(){
+            F.ReadAll();
+            string op;
+            cout << "Usa computador da empresa?" << endl;
+            if (op == "S" || op == "s"){
+                PC_Empresa = true;
+            } else {
+                PC_Empresa = false;
+            }
+        }
+
+        void ReadFile(ifstream& in){
+            F.ReadFile(in);
+
+            string op;
+            cout << "Usa computador da empresa?" << endl;
+            getline(in,op,',');
+            if(op == "S" || op == "s"){
+                PC_Empresa = true;
+            } else {
+                PC_Empresa = false;
+            }
+        }
+
+        void SaveFile(ofstream& out){
+            F.SaveFile(out);
+
+            if (PC_Empresa = true){
+                out << "Sim" << endl;
+            } else {
+                out << "Nao" << endl;
+            }
+        }
+
+        float Calcula_Ordenado(){
+            return getSalario() * getH_Trabalho();
+        }
 
 };
