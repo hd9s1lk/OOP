@@ -190,6 +190,7 @@ class Pessoa: public Data{
 
             }
 
+
             void NewDate() {                                  //Inserir nova data
                 cout << "Insira uma nova data: " << endl;
                 Data data;
@@ -301,16 +302,45 @@ class Funcionario: public Pessoa{
         int Num_func;
         string Setor;
         Pessoa pessoa;
+        float P_hora_extra;
+        int Horas_extra;
+        float OrdBase;
     public:
         Funcionario(){
 
         }
 
-        Funcionario(int num_func, string setor, Pessoa _pessoa){
+        Funcionario(int num_func, string setor, float p_hora_extra,Pessoa _pessoa, int horas_extra, float ordbase){
             Num_func = num_func;
             Setor = setor;
+            P_hora_extra = p_hora_extra;
             pessoa = _pessoa;
+            Horas_extra = horas_extra;
+            OrdBase = ordbase;
+        }
 
+        inline void setOrdBase(float ordbase){
+            OrdBase = ordbase;
+        }
+
+        inline float getOrdBase(){
+            return OrdBase;
+        }
+
+        inline void setHoras_extra(int horas_extra){
+            Horas_extra = horas_extra;
+        }
+
+        inline int getHoras_extra(){
+            return Horas_extra;
+        }
+
+        inline void setP_hora_extra(float p_hora_extra){
+            P_hora_extra = p_hora_extra;
+        }
+
+        inline float getP_hora_extra(){
+            return P_hora_extra;
         }
 
         inline void setNum_func(int num_func){
@@ -374,7 +404,6 @@ class Funcionario: public Pessoa{
             
             pessoa.SaveFile(of);
             of << getNum_func() << "/" << getSetor() << endl;
-
         }
 
         void ReadFile(ifstream& sf){
@@ -411,6 +440,103 @@ class Funcionario: public Pessoa{
             aux = *f;
             *f = *f2;
             *f2 = aux;
+        }
+
+        float Calcula_Ordenado();
+
+
+};
+
+
+class Operario: public Funcionario {
+    private:
+        bool F_turno;
+        Funcionario F;
+    public:
+        Operario(){
+
+        }
+        Operario(bool f_turno, Funcionario f){
+            F_turno = f_turno;
+            F = f;
+        }
+
+        inline void setF_turno(bool f_turno){
+            F_turno = f_turno;
+        }
+
+        inline bool getF_turno(){
+            return F_turno;
+        }
+
+        void Show(){
+            F.Show();            
+            if (F_turno){
+                cout << "Em turno: " << getNome() << "/" << getNum_func() << endl;
+            } else {
+                cout << "Ninguem em turno" << endl;
+            }
+        }
+
+        void ReadAll() {   
+                F.ReadAll();                                //Ler info de novo utilizador atraves do teclado
+                string op;
+                cout << "Trabalho por turno (S/N)" << endl;
+                cin >> op;
+                if (op == "S" || op == "s"){
+                    F_turno = true;
+                } else {
+                    F_turno = false;
+                }
+            }
+
+        void ReadFile(ifstream& sf){
+            F.ReadFile(sf);
+            string op;
+            cout << "Trabalho por turno (S/N)" << endl;
+            getline(sf, op, ',');
+            if (op == "S" || op == "s"){
+                F_turno = true;
+            } else {
+                F_turno = false;
+            }
+        }
+
+        void Savefile(ofstream& of){
+            F.SaveFile(of);
+
+            if (F_turno == true){
+                of << "Sim" << endl;
+            } else {
+                of << "Não" << endl;
+            }
+
+        }
+
+        float Calcula_Ordenado(){
+            if (F_turno){
+                return getOrdBase() * 1.25f + getHoras_extra() * getP_hora_extra();
+            } else {
+                return getOrdBase() + getHoras_extra() * getP_hora_extra();
+            }
+        }
+
+};
+
+class Administrativo: public Funcionario{
+    private:
+        Funcionario F;
+    public:
+
+        Administrativo(){
+
+        }
+        Administrativo(Funcionario f){
+            F = f;
+        }
+
+        float Calcula_Ordenado(){
+            return getOrdBase() + getHoras_extra() * getP_hora_extra();
         }
 
 };
