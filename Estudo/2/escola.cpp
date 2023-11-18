@@ -19,8 +19,8 @@ int main(int argc, char* argv[]){
         exit(1);
     }
 
-    prof1.SaveFile(sf);
-    prof2.SaveFile(sf);
+    prof1.SaveFIle(sf);
+    prof2.SaveFIle(sf);
     sf.close();
 
     rf.open("Escola.txt");
@@ -32,45 +32,6 @@ int main(int argc, char* argv[]){
     prof1.ReadFile(rf);
     prof2.ReadFile(rf);
     rf.close();
-
-    string str = "Escola.txt";
-
-    cout << "Nome do ficheiro: " << endl;
-    cin >> str;
-
-    sf.open(str.c_str());
-    if(sf){
-        prof1.SaveFile(sf);
-        prof2.SaveFile(sf);
-        cout << "Ficheiro " << str << "criado com sucesso" << endl;
-    } else {
-        cout << "Erro" << endl;
-    }
-
-    Professor p[3];
-
-    int size;
-    int i;
-
-    ifstream ifile;
-    ifile.open("Escola.txt");
-    if (ifile){
-        while(ifile.peek() != EOF){
-            p[size].ReadFile(ifile);
-            ifile.get();
-            size++;
-            cout << "While: " << endl;
-        }
-        ifile.close();
-    } else {
-        cout << "Erro" << endl;
-    }
-
-    for(i=0; i<size; i++){
-        if(p[i].getUC() == "Matemática"){
-            p[i].Show();
-        }
-    }
 
 
     system("pause");

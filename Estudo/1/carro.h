@@ -142,15 +142,17 @@ class Passageiro: public Carro {
         string Nome;
         int Idade;
         Carro carro;
+        string Equipa;
 
     public:
         Passageiro() {
 
         }
 
-        Passageiro(string nome, int idade, Carro _carro){
+        Passageiro(string nome, int idade, string equipa,Carro _carro){
             Nome = nome;
             Idade = idade;
+            Equipa = equipa;
             carro = _carro;
         }
 
@@ -178,9 +180,20 @@ class Passageiro: public Carro {
             return carro;
         }
 
+        inline void setEquipa(string equipa){
+            Equipa = equipa;
+        }
+
+        inline string getEquipa(){
+            return Equipa;
+        }
+
+        
+
         void Show(){
             cout << "Nome: " << getNome() << endl;
             cout << "Idade: " << getIdade() << endl;
+            cout << "Equipa: " << getEquipa() << endl;
             carro.Show();
 
         }
@@ -196,6 +209,10 @@ class Passageiro: public Carro {
             cout << "Insira a idade: " << endl;
             cin >> temp2;
             setIdade(temp2);
+
+            cout << "Insira a equipa: " << endl;
+            cin >> temp;
+            setEquipa(temp);
 
             cout << "Altere o veículo: " << endl;
             Carro carro;
@@ -272,10 +289,170 @@ class Passageiro: public Carro {
             getline(rf,line,',');
             Idade = stoi(line);
 
-            carro.ReadFile(rf);
-
             //getline(rf,line);
             //carro = stoi(line);
+        }
+
+};
+
+class Combustivel: public Passageiro{
+    private:
+        string Tipo_combustivel;
+        Passageiro P;
+        Carro carro;
+    public:
+        Combustivel(){
+
+        }
+        
+        Combustivel(string tipo_combustivel,Passageiro p){
+            Tipo_combustivel = tipo_combustivel;
+            P = p;
+        }
+
+        inline void setTipo_Combustivel(string tipo_combustivel){
+            Tipo_combustivel = tipo_combustivel;
+        }
+
+        inline string getTipo_Combustivel(){
+            return Tipo_combustivel;
+        }
+
+        inline void setPassageiro(Passageiro p){
+            P = p;
+        }
+
+        inline Passageiro getPassageiro(){
+            return P;
+        }
+
+        void Show(){
+            P.Show();
+
+            cout << "Tipo de combustivel: " << getTipo_Combustivel() << endl;
+        }
+
+        void Update(){
+            P.Update();
+
+            char aux[100];
+            cout << "Insira um novo tipo de combustivel: " << endl;
+            cin >> aux;
+            setTipo_Combustivel(aux);
+
+        }
+
+        void ShowCarro(){
+            P.getCarro();
+            cout << "Combustivel: " << getTipo_Combustivel() << endl;
+
+        }
+
+        friend istream& operator >>(istream& sf, Combustivel& c){
+            
+            char aux[100];
+
+            sf >> (Passageiro&) c;
+            cout << "Insira um novo tipo de combustivel: " << endl;
+            sf >> aux;
+            c.Tipo_combustivel = aux;            
+
+            return sf;
+
+        }
+
+        friend ostream& operator << (ostream& rf, Combustivel& c){
+
+            rf << (Passageiro&) c;
+            rf << "Tipo de combustivel: " << c.Tipo_combustivel << endl;
+
+            return rf;
+        }
+
+        void Savefile(ofstream& rf){
+            P.SaveFile(rf);
+            rf << "Tipo de combustivel: " << getTipo_Combustivel() << endl;
+
+        }
+
+        void ReadFile(ifstream& sf){
+            P.ReadFile(sf);
+
+            string line;
+            while(getline(sf,line)){
+                cout << line << endl;
+            }
+        }
+
+        void Swap(Combustivel* c1, Combustivel* c2){
+            Combustivel temp;
+
+            temp = *c1;
+            *c1 = *c2;
+            *c2 = temp;
+        }
+
+};
+
+class Piloto: public Passageiro{
+    private: 
+        string Equipa;
+        Passageiro P;
+    public:
+        Piloto(){
+
+        }
+        Piloto(string equipa, Passageiro p){
+            Equipa = equipa;
+            P = p;
+        }
+
+        void Update(){
+            P.Update();
+
+            string temp;
+            cout << "Insira uma nova equipa: " << endl;
+            cin >> temp;
+            setEquipa(temp);
+        }
+
+        friend istream& operator >>(istream& sf, Piloto& p){
+            
+            char aux[100];
+
+            cout << "Insira dados do passageiro: " << endl;
+            sf >> p.P;
+            cout << "Insira uma nova equipa: " << endl;
+            sf >> aux;
+            p.Equipa = aux;            
+
+            return sf;
+
+        }
+
+        friend ostream& operator << (ostream& rf, Piloto& p){
+
+            rf << "Tudo: " << p.P << endl;
+            rf << "Equipa: " << p.Equipa << endl;
+
+            return rf;
+        }
+
+        void Savefile(ofstream& rf){
+            P.SaveFile(rf);
+
+            rf << "Equipa: " << getEquipa() << endl;
+
+        }
+
+        void ReadFile(ifstream& sf){
+            P.ReadFile(sf);
+
+            char aux[100];
+            cout << "Equipa: " << endl;
+            sf >> aux;
+            setEquipa(aux);
+
         }
 
 
