@@ -442,7 +442,7 @@ class Funcionario: public Pessoa{
             *f2 = aux;
         }
 
-        float Calcula_Ordenado();
+        virtual float Calcula_Ordenado();
 
 
 };

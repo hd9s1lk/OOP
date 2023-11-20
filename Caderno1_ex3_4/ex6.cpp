@@ -107,7 +107,7 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
             cout << endl << endl;
         }
 
-        void PesquisaFuncionario(vector<Funcionario*> &Lista){
+void PesquisaFuncionario(vector<Funcionario*> &Lista){
             cout << "Pesquisa pelo Funcionario " << endl;
 
             int num;
@@ -125,7 +125,7 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
                 
         }
 
-        void ChangeOrd(vector<Funcionario*> &Lista){
+void ChangeOrd(vector<Funcionario*> &Lista){
             int num;
             cout << "Insira o numero de Funcionario:" << endl;
             cin >> num;
@@ -145,7 +145,7 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
                 
         }
 
-        void CriarFuncionario(vector<Funcionario*> &Lista){
+void CriarFuncionario(vector<Funcionario*> &Lista){
             cout << "Criar um Funcionario " << endl;
 
             string str;
@@ -171,20 +171,20 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
             fflush(stdin);
         }
 
-        void ApresentaTurnos(vector<Funcionario*> &Lista){
+void ApresentaTurnos(vector<Funcionario*> &Lista){
             cout << "Lista dos Operarios que trabalham em turnos: " << endl;
 
-            for (int i=0; i<Lista[i].size(); i++){
+            for (int i=0; i<Lista.size(); i++){
                 if(Operario *op = dynamic_cast<Operario*>(Lista[i])){
                     if(op->getF_turno()){
-                        cout << op->getNum_func() << "/" << op->getNome() << endl; 
+                        cout << op->getNum_func() << "/" << op->getNome() << endl;
                     }
                 }
             }
             cout << endl;
         }
 
-        void EliminarFuncionario(vector<Funcionario*> &Lista){
+void EliminarFuncionario(vector<Funcionario*> &Lista){
             int num;
             cout << "Insira o numero de Funcionario:" << endl;
             cin >> num;
@@ -201,7 +201,7 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
                 
         }
 
-        void GuardarAdm(vector<Funcionario*> &Lista){
+void GuardarAdm(vector<Funcionario*> &Lista){
 
             ofstream file;
             file.open("Administrativos.txt");
@@ -221,7 +221,7 @@ void CalculaOrdenadosVetor(vector<Funcionario*> &Lista){
             file.close();
         }
 
-        void GuardarO(vector<Funcionario*> &Lista){
+void GuardarO(vector<Funcionario*> &Lista){
 
             ofstream file;
             file.open("Operarios.txt");

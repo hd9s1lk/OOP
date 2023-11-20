@@ -137,6 +137,42 @@ class Empresa {
 
 };
 
+class Setor: public Empresa{
+    private:
+        string Firma;
+        Empresa E;
+    public:
+        Setor(){
+
+        }
+        Setor(string firma, Empresa e){
+            Firma = firma;
+            E = e;
+        }
+
+        inline void setFirma(string firma){
+            Firma = firma;
+        }
+
+        inline string getFirma(){
+            return Firma;
+        }
+
+        inline void setEmpresa(Empresa e){
+            E = e;
+        }
+
+        inline Empresa getEmpresa(){
+            return E;
+        }
+
+        void Show(){
+            E.Show();
+            cout << "Firma: " << getFirma() << endl;
+        }
+
+};
+
 class Funcionario: public Empresa {
     private: 
         string Name;
@@ -198,14 +234,7 @@ class Funcionario: public Empresa {
             return AnoEXP;
         }
 
-        inline void setEmpresa(Empresa _empresa){
-            empresa = _empresa;
-        }
-
-        inline Empresa getEmpresa(){
-            return empresa;
-        }
-
+        
         void Show(){
             cout << "Nome do Funcionario: " << getName() << endl;
             cout << "Idade: " << getIdade() << endl;
@@ -322,6 +351,7 @@ class Funcionario: public Empresa {
                 char aux[100];
                 int temp;
                 float temp3;
+                Empresa E;
                 cout << "Insira o seu nome: " << endl;
                 cin.getline(aux, sizeof aux);
                 setNome(aux);
@@ -332,8 +362,7 @@ class Funcionario: public Empresa {
                 cin >> temp;
                 setAnoEXP(temp);
                 cout << "Insira a sua empresa" << endl;
-                cin >> empresa;
-                setEmpresa(empresa);
+                cin >> E;
                 cout << "Insira o seu salario: " << endl;
                 cin >> temp3;
                 setSalario(temp3);
@@ -343,7 +372,10 @@ class Funcionario: public Empresa {
                 
 
             }
-
+        
+        virtual float Calcula_Ordenado(){
+            return getSalario() * getH_Trabalho();
+        }
 
 };
 
