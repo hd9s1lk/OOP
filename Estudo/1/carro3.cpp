@@ -115,7 +115,7 @@ void PesquisarCarro(vector<Passageiro*> &Lista){
     cin >> carro;
 
     for(int i=0; i<Lista.size(); i++){
-        if (carro == Lista[i]->getCarro()){
+        if (carro = Lista[i]->getCarro()){
             cout << Lista[i]->getMarca() << "/" << Lista[i]->getHp() << "/" << Lista[i]->getAno() << endl;
         } else {
             cout << "Nao existe esse carro" << endl;

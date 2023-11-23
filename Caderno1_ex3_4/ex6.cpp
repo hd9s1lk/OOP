@@ -26,19 +26,12 @@ int main(int argc, char* argv[]){
 
         cin >> op;
 
-        switch(op){
-            case 0:
-                exit(0);
-                break;
-            case 1:
-
-        }
 
         if(op==0){
             exit(1);
         }
         if(op==1){
-            
+            LerFicheiro(Lista);
         }
         if(op==2){
             CalculaOrdenadosVetor(Lista);
