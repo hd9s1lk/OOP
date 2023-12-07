@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 using namespace std;
 
@@ -456,7 +457,7 @@ class Operario: public Funcionario {
         Operario(){
 
         }
-        Operario(bool f_turno, Funcionario f){
+        Operario(Funcionario f, bool f_turno){
             F_turno = f_turno;
             F = f;
         }
@@ -538,5 +539,145 @@ class Administrativo: public Funcionario{
         float Calcula_Ordenado(){
             return getOrdBase() + getHoras_extra() * getP_hora_extra();
         }
+
+};
+
+class Gestor_Func {
+    private:
+        list<Funcionario*> Lista;
+    public:
+        Gestor_Func(){
+            if (!Lista.empty()){
+                Lista.clear();
+            }
+        };
+
+        ~Gestor_Func(){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        void setGestor_Func(list<Funcionario*> _Lista){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        list<Funcionario*> getGestor_Func(){
+            return Lista;
+        }
+
+        void AdicionarFuncionario(Funcionario* f){
+            for(Funcionario* F: Lista){
+                if(F->getNum_func() == f->getNum_func()){
+                    return;
+                }
+            }
+            Lista.push_back(f);
+        }
+        
+        void RemoverFuncionario(int num){
+            list<Funcionario*>::iterator pos = Lista.begin();
+
+            do {
+                if ((*pos)->getNum_func() == num){
+                    Lista.erase(pos);
+                    cout << "Funcionario removido " << endl;
+                    return;
+                }
+                pos++;
+            } while(pos!=Lista.end());
+        }
+
+        void ShowFunc(){
+            cout << "Lista de Funcionarios: " << endl;
+
+            for(Funcionario *F: Lista){
+                if(Operario *op= dynamic_cast<Operario*>(F)){
+                    op->Show();
+                } else if(Administrativo *adm = dynamic_cast<Administrativo*>(F)){
+                    adm->Show();
+                } else {
+                    F->Show();
+                }
+                cout << endl;
+            }
+        }
+
+        friend istream& operator>> (istream& is, Gestor_Func&gf){
+            cout << "Deseja inserir: " << endl;
+            cout << "Operario: O" << endl;
+            cout << "Administrativo: adm" << endl;
+
+        string tipo;
+        getline(is, tipo, ';');
+
+            if (tipo.compare("O") == 0 || tipo.compare("o")){
+                Operario *op= new Operario();
+                op->ReadAll();
+                gf.AdicionarFuncionario(op);
+            } else if (tipo.compare("ADM") == 0 || tipo.compare("adm")){
+                Administrativo *adm = new Administrativo();
+                adm->ReadAll();
+                gf.AdicionarFuncionario(adm);
+            }
+
+            return is;
+        }
+
+        friend ostream& operator<< (ostream& os, Gestor_Func gf){
+            gf.ShowFunc();
+            return os;
+        }
+
+        void ReadFile(){
+            ifstream file;
+            file.open("Funcionarios.txt");
+            if(!file.is_open()){
+                return;
+            }
+
+            do {
+                string tipo;
+                getline(file,tipo,';');
+                if(tipo == "O"){
+                    Operario *op = new Operario();
+                    op->ReadFile(file);
+                    Lista.push_back(op);
+                } else if (tipo == "adm"){
+                    Administrativo *adm = new Administrativo();
+                    adm->ReadFile(file);
+                    Lista.push_back(adm);
+                }
+                cout << endl;
+            } while(file.peek() != EOF);
+
+        file.close();
+        }
+
+        void SaveFile(){
+            ofstream file;
+            file.open("Funcionarios.txt");
+            if(!file.is_open()){
+                return;
+            }
+
+            for (Funcionario * F: Lista){
+                if (Operario * op = dynamic_cast<Operario*>(F)){
+                    file << "O: ";
+                    op->SaveFile(file);
+                } else if (Administrativo* adm = dynamic_cast<Administrativo*>(F)){
+                    file << "A: ";
+                    adm->SaveFile(file);
+                }
+
+                file << endl;
+            }
+        file.close();
+        }
+
+
+
 
 };

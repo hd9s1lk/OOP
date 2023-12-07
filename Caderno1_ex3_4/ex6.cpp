@@ -2,6 +2,7 @@
 #include <fstream>
 #include "ex.h"
 #include <vector>
+#include <list>
 
 
 using namespace std;
@@ -233,3 +234,4 @@ void GuardarO(vector<Funcionario*> &Lista){
             cout << "Ficheiro guardado com sucesso" << endl;
             file.close();
         }
+
