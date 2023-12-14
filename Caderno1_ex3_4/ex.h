@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <map>
 
 using namespace std;
 
@@ -545,6 +546,8 @@ class Administrativo: public Funcionario{
 class Gestor_Func {
     private:
         list<Funcionario*> Lista;
+        map <int, float> map_of_salarios;
+
     public:
         Gestor_Func(){
             if (!Lista.empty()){
@@ -677,7 +680,23 @@ class Gestor_Func {
         file.close();
         }
 
+        void GerarMap(){
+            list<Funcionario*>::iterator p = Lista.begin();
+            while(p != Lista.end()){
+                if (map_of_salarios.insert(make_pair((*p)->getNum_func(), (*p)->Calcula_Ordenado())).second == false){
+                    cout << "\n Funcionario com o numero: " << (*p)->getNum_func() << "foi inserido" << endl;
+                }
+                p++;
+            }
+            return;
+        }
 
+        void ShowMapValue(int num){
+            if (map_of_salarios.find(num) != map_of_salarios.end()){
+                cout << "\n Vencimento do funcionario: " << map_of_salarios[num] << "Euros." << endl;
+            }
+            return;
+        }
 
 
 };
