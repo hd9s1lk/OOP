@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include <map>
+#include <list>
 
 using namespace std;
 
