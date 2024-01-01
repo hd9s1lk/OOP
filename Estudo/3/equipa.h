@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
-
+#include <list>
+#include <map>
+#include <string.h>
 
 using namespace std;
 
@@ -460,3 +462,156 @@ class SoftwareEnginner: public Funcionario {
 
 };
 
+class Gestor{
+    private:
+        list<Funcionario*> Lista;
+        map<string, float> map_of_salarios;
+    public:
+        Gestor(){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        ~Gestor(){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        void setGestor(list<Funcionario*> _Lista){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+            Lista = _Lista;
+        }
+
+        list<Funcionario*> getGestor(){
+            return Lista;
+        }
+
+        void AdicionarFuncionario(Funcionario* f){
+            for(Funcionario* F: Lista){
+                if(F->getName() == f->getName()){
+                    return;
+                }
+            }
+            Lista.push_back(f);
+        }
+
+        void RemoverFuncionario(string nome){
+            list<Funcionario*>:: iterator p = Lista.begin();
+
+            while(p != Lista.end()){
+                if((*p)->getName() == nome ){
+                    Lista.erase(p);
+                }
+                p++;
+            }
+        }
+
+        void ShowFunc(){
+            cout << "Lista de Funcionarios: " << endl;
+
+            for(Funcionario* F: Lista){
+                if(Chefe *ch = dynamic_cast<Chefe*>(F)){
+                    ch->Show();
+                } else if (SoftwareEnginner* softeng = dynamic_cast<SoftwareEnginner*>(F)){
+                    softeng->Show();
+                } else {
+                    F->Show();
+                }
+                cout << endl;
+            }
+        }
+
+        friend istream& operator >>(istream& is, Gestor&g){
+            cout << "Deseja inserir: " << endl;
+            cout << "Chefe? (C)" << endl;
+            cout << "Engenheiro Software (E)" << endl;
+
+        string tipo;
+        getline(is, tipo, ';');
+
+        if(tipo.compare("C") || tipo.compare("c")){
+            Chefe* ch = new Chefe();
+            ch->ReadAll();
+            g.AdicionarFuncionario(ch);
+        } else if (tipo.compare("E") || tipo.compare("e")){
+            SoftwareEnginner* softeng = new SoftwareEnginner();
+            softeng->ReadAll();
+            g.AdicionarFuncionario(softeng);    
+        }
+
+        return is;
+        }
+
+        friend ostream& operator << (ostream& os, Gestor&g){
+            g.ShowFunc();
+            return os;
+        }
+
+        void ReadFile(){
+            ifstream ifile;
+            ifile.open("Equipa.txt");
+            if(!ifile.is_open()){
+                return;
+            }
+
+            do {
+                string tipo;
+                getline(ifile, tipo, ';');
+                if (tipo == "C" || tipo == "c"){
+                    Chefe* ch = new Chefe();
+                    ch->ReadFile(ifile);
+                    Lista.push_back(ch);
+                } else if (tipo == "E" || tipo == "e"){
+                    SoftwareEnginner* softeng = new SoftwareEnginner();
+                    softeng->ReadFile(ifile);
+                    Lista.push_back(softeng);
+                }
+                cout << endl;
+            } while(ifile.peek() != EOF);
+
+        ifile.close();
+        }
+
+        void SaveFile(){
+            ofstream ofile;
+            ofile.open("Equipa.txt");
+            if(!ofile.is_open()){
+                return;
+            }
+
+            for(Funcionario* F: Lista){
+                if(SoftwareEnginner* softeng = dynamic_cast<SoftwareEnginner*>(F)){
+                    ofile << "O: ";
+                    softeng->SaveFile(ofile);
+                } else if (Chefe* ch = dynamic_cast<Chefe*>(F)){
+                    ofile << "C: ";
+                    ch->SaveFile(ofile);
+                }
+                ofile << endl;
+            }
+        ofile.close();
+        }
+
+        void GerarMap(){
+            list<Funcionario*>::iterator p = Lista.begin();
+
+            while(p != Lista.end()){
+                if(map_of_salarios.insert(make_pair((*p)->getName(), (*p)->getSalario())).second == false){
+                    cout << "Funcionario de nome: " << (*p)->getName() << "com um salario base de: " << (*p)->getSalario() << endl;
+                 }
+                 p++;
+            }
+        }
+
+        void ShowMapValue(float num){
+            if(map_of_salarios.find(num) != map_of_salarios.end()){
+                cout << "\n Vencimento do funcionario: " << map_of_salarios[num] << "Euros." << endl;
+            }
+            return;
+        }
+
+};
