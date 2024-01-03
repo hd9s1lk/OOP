@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <list>
+#include <map>
 
 using namespace std;
 
@@ -514,6 +516,168 @@ class Aluno: public Curso{
         }
 
 
+};
+
+class Gestor{
+    private:
+        list<Curso*> Lista;
+        map<string, int> map_of_birth;
+    public:
+        Gestor(){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        ~Gestor(){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+        }
+
+        void setGestor(list<Curso*> _Lista){
+            if(!Lista.empty()){
+                Lista.clear();
+            }
+            Lista = _Lista;
+        }
+
+        list<Curso*> getGestor(){
+            return Lista;
+        }
+
+        void AdicionarCurso(Curso* C){
+            for(Curso* c: Lista){
+                if(c->getName() == C->getName()){
+                    return;
+                }
+            }
+            Lista.push_back(C);
+        }
+
+        void RemoverCurso(string nome){
+            list<Curso*>::iterator p = Lista.begin();
+
+            do{
+                if((*p)->getName() == nome ){
+                    Lista.erase(p);
+                    cout << "Curso removido" << endl;
+                    return;
+                }
+                p++;
+            }
+            while(p!=Lista.end());
+        }
+
+        void ShowCurso(){
+            cout << "Diferentes Professores/Alunos: " << endl;
+
+            for(Curso* c: Lista){
+                if(Professor* p = dynamic_cast<Professor*>(c)){
+                    p->Show();
+                } else if (Aluno* a = dynamic_cast<Aluno*>(c)){
+                    a->Show();
+                } else {
+                    c->Show();
+                }
+                cout << endl;
+            }
+        }
+
+        friend istream& operator >> (istream& in, Gestor& g){
+            cout << "Deseja inserir: " << endl;
+            cout << "Professor: (P)" << endl;
+            cout << "Aluno: (A)" << endl;
+
+            string tipo;
+            getline(in, tipo, ';');
+
+            if(tipo.compare("P") || tipo.compare("p")){
+                Professor* p = new Professor();
+                p->Show();
+                g.AdicionarCurso(p);
+            } else if (tipo.compare("A") || tipo.compare("a")){
+                Aluno* a = new Aluno();
+                a->Show();
+                g.AdicionarCurso(a);
+            }
+
+            return in;
+
+        }
+
+        friend ostream& operator << (ostream& out, Gestor& g){
+            g.ShowCurso();
+            return out;
+        }
+
+        void ReadFile(){
+            ifstream ifile;
+            ifile.open("Uni.h");
+
+            if(!ifile.is_open()){
+                return;
+            }
+
+            do {
+                string tipo;
+                getline(ifile, tipo, ',');
+
+                if(tipo == "A" || tipo == "a"){
+                    Aluno* a = new Aluno();
+                    a->ReadFile(ifile);
+                    Lista.push_back(a);
+                } else if(tipo == "P" || tipo == "p"){
+                    Professor* p = new Professor();
+                    p->ReadFile(ifile);
+                    Lista.push_back(p);
+                }
+
+                cout << endl;
+            } while(ifile.peek() != EOF);
+
+            ifile.close();
+        }
+
+        void SaveFile(){
+            ofstream ofile;
+            ofile.open("Uni.h");
+            if(!ofile.is_open()){
+                return;
+            }
+
+            for(Curso* c: Lista){
+                if(Professor* p = dynamic_cast<Professor*>(c)){
+                    ofile << "P";
+                    p->SaveFile(ofile);
+                } else if (Aluno* a = dynamic_cast<Aluno*>(c)){
+                    ofile << "A";
+                    a->SaveFile(ofile);
+                }
+
+                ofile << endl;
+            }
+
+        ofile.close();
+        }
+
+        void GerarMap(){
+            list<Curso*>::iterator p = Lista.begin();
+            while(p!=Lista.end()){
+                if(map_of_birth.insert(make_pair((*p)->getNome(), (*p)->AnoNascimento())).second == false){
+                    cout << "Dados inseridos da universidade: " << (*p)->getUniversidade() << endl;
+                }
+                p++;
+            }
+            return;
+        }
+
+        void ShowMapValue(string nome){
+            if (map_of_birth.find(nome) != map_of_birth.end()){
+                cout << "Nome da universidade: " << map_of_birth[nome] << endl;
+            }
+            return;
+        }
 };
 
 
